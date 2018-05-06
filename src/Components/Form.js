@@ -1,7 +1,11 @@
 import React from 'react';
 
-const Form = ({searchHandler}) => {
+const Form2 = ({match, history}) => {
     let searchString;
+    const searchHandler = (event, searchString) => {
+        event.preventDefault();
+        history.push( match.path + '/' + searchString);
+    }
     return (
         <form className="search-form"
             onSubmit={event => searchHandler(event, searchString.value)}>
@@ -23,4 +27,4 @@ const Form = ({searchHandler}) => {
     )
 }
 
-export default Form;
+export default Form2;

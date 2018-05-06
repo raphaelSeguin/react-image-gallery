@@ -10,49 +10,40 @@ class App extends Component {
 
     constructor() {
         super();
-        this.state = {
-            keyWord: ''
-        }
+        this.keyCounter = 0;
     }
 
-    searchHandler = (event, searchString) => {
-        event.preventDefault();
-        this.setState({ keyWord: searchString });
-    }
+    routeHandler = ({match}) =>
+        <Container
+            key={this.keyCounter++}
+            keyWord={match.params.query}
+            apiKey={key} />
 
     render() {
         return (
             <BrowserRouter>
                 <div className="container">
-                    <Header
-                        searchHandler={this.searchHandler}/>
+                    <Header />
                     <Switch>
                         <Route
-                            path='/fishes'
-                            component={
-                                () => <Container
-                                    keyWord="fishes"
-                                    apiKey={key} />
-                            } />
-                        <Route
-                            path='/cats'
-                            component={
-                                () => <Container
-                                    keyWord="cats"
-                                    apiKey={key} />
-                            } />
-                        <Route
-                            path='/catfishes'
-                            component={
-                                () => <Container
-                                    keyWord="catfishes"
-                                    apiKey={key} />
-                            } />
-                        <Route
                             path='/search/:query'
-                            component={Container}
-                        />
-                        {/* <Redirect to='/blablala' /> */}
+                            render={this.routeHandler} />
+                        <Route
+                            path='/search/'
+                            render={this.routeHandler} />
+                        <Route
+                            path='/presets/:query'
+                            render={this.routeHandler} />
+                        <Route
+                            exact path='/'
+                            render={ () => <Redirect to='presets/cats' /> } />
+                        <Route
+                            path='/'
+                            render={ () =>
+                                <div>
+                                    <h1>404</h1>
+                                    <h1>There's nothing here for you to see!</h1>
+                                </div> } />
                     </Switch>
                 </div>
             </BrowserRouter>

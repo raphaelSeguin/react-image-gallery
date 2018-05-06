@@ -1,14 +1,16 @@
 import React from 'react';
 import Photo from './Photo.js'
 
-const Gallery = ({photos, loading}) => {
+const Gallery = ({photos, loading, noMatch}) => {
     return (
         <div className="photo-container">
             <h2>
                 {
                     loading
                         ? 'Loading...'
-                        : 'Results'
+                        : noMatch
+                            ? 'Sorry, I found nothing !'
+                            : 'Results'
                 }
             </h2>
             <ul>

@@ -8,33 +8,45 @@ class Container extends Component {
         this.state = {
             loading: true,
             photosURL: [],
-            photosPerPage: 16
+            noMatch: false
         };
-        this.keyWord = keyWord;
+        this.photosPerPage = 16
+        this.keyWord = keyWord ;
         this.apiKey = apiKey;
     }
 
     queryFlickr() {
-        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${this.apiKey}&tags=${this.keyWord}&per_page=${this.state.photosPerPage}&format=json&nojsoncallback=1`;
+        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${this.apiKey}&tags=${this.keyWord}&per_page=${this.photosPerPage}&format=json&nojsoncallback=1`;
         fetch(url)
             .then( res => res.json() )
             .then( data => data.photos.photo )
             .then( data => data.map( infos =>
                 `https://farm${infos.farm}.staticflickr.com/${infos.server}/${infos.id}_${infos.secret}.jpg` ))
-            .then( data => this.setState({ photosURL: data, loading: false }) )
+            .then( data =>
+                this.setState({
+                    photosURL: data,
+                    loading: false,
+                    noMatch: data.length === 0
+                })
+            )
             .catch( err => console.log("Error" + err) )
     }
 
     componentDidMount() {
-        this.queryFlickr();
+        if ( this.keyWord ) {
+            this.queryFlickr();
+        }
     }
 
     render() {
-        return(
-            <div>
-                <Gallery photos={this.state.photosURL} loading={this.state.loading}/>
-            </div>
-        )
+        if ( this.keyWord ) {
+            return  <Gallery
+                photos={this.state.photosURL}
+                loading={this.state.loading}
+                noMatch={this.state.noMatch} />
+        } else {
+            return null
+        }
     }
 
 }
