@@ -33,12 +33,14 @@ class Container extends Component {
     }
 
     componentDidMount() {
+        // query Flickr if there's a query string
         if ( this.keyWord ) {
             this.queryFlickr();
         }
     }
 
     render() {
+        // render the gallery if there's a query string
         if ( this.keyWord ) {
             return  <Gallery
                 photos={this.state.photosURL}
@@ -48,7 +50,6 @@ class Container extends Component {
             return null
         }
     }
-
 }
 
 export default Container;

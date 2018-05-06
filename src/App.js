@@ -8,11 +8,12 @@ import Container from './Components/Container.js';
 
 class App extends Component {
 
+    // the keyCounter variable ensures the route is re-rendered everytime, even if the route is the same, by changing the key prop value every time the route is matched. Tell me if you know a cleaner way, it's the only thing that worked for me.
     constructor() {
         super();
         this.keyCounter = 0;
     }
-
+    // passes a key, the word to query and the API key
     routeHandler = ({match}) =>
         <Container
             key={this.keyCounter++}
@@ -34,9 +35,12 @@ class App extends Component {
                         <Route
                             path='/presets/:query'
                             render={this.routeHandler} />
+
+                    {/* Fallback for root */}
                         <Route
                             exact path='/'
                             render={ () => <Redirect to='presets/cats' /> } />
+                    {/* Fallback for any other route (404) */}
                         <Route
                             path='/'
                             render={ () =>

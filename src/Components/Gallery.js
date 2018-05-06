@@ -5,7 +5,7 @@ const Gallery = ({photos, loading, noMatch}) => {
     return (
         <div className="photo-container">
             <h2>
-                {
+                { // Loading and alert messages
                     loading
                         ? 'Loading...'
                         : noMatch
